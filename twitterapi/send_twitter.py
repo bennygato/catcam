@@ -20,8 +20,8 @@ def main():
   api = get_api(cfg)
 
   # send tweet
-  # tweet_1 = "this is a test tweet without pic"
-  # status = api.update_status(status = tweet_1) 
+  tweet_1 = "this is a test tweet without pic"
+  status = api.update_status(status = tweet_1)
 
   # send tweet with image
   photo_path = '../test.jpg'
