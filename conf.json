@@ -1,9 +1,18 @@
 {
 	"show_video": true,
 	"use_dropbox": false,
+
 	"dropbox_key": "YOUR_DROPBOX_KEY",
 	"dropbox_secret": "YOUR_DROPBOX_SECRET",
 	"dropbox_base_path": "YOUR_DROPBOX_APP_PATH",
+
+	"use_weibo": true,
+	"weibo_key": "key",
+	"weibo_secret":"secret",
+
+	"use_twitter": false,
+	"twitter_key":"key",
+	"twitter_secret":"secret",
 	"min_upload_seconds": 3.0,
 	"min_motion_frames": 8,
 	"camera_warmup_time": 2.5,

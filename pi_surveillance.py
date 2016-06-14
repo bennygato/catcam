@@ -2,7 +2,7 @@
 # python pi_surveillance.py --conf conf.json
 
 # import the necessary packages
-#from pyimagesearch.tempimage import TempImage
+from pyimagesearch.tempimage import TempImage
 #from dropbox.client import DropboxOAuth2FlowNoRedirect
 #from dropbox.client import DropboxClient
 from picamera.array import PiRGBArray
