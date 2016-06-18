@@ -9,6 +9,7 @@
 	"use_weibo": true,
 	"weibo_key": "key",
 	"weibo_secret":"secret",
+	"weibo_base_path":"",
 
 	"use_twitter": false,
 	"twitter_key":"key",

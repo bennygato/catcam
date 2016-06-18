@@ -7,6 +7,7 @@ from pyimagesearch.tempimage import TempImage
 #from dropbox.client import DropboxClient
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+from weibo import APIClient
 import argparse
 import warnings
 import datetime
@@ -27,17 +28,17 @@ warnings.filterwarnings("ignore")
 conf = json.load(open(args["conf"]))
 client = None
 
-# check to see if the Dropbox should be used
-if conf["use_dropbox"]:
-	# connect to dropbox and start the session authorization process
-	flow = DropboxOAuth2FlowNoRedirect(conf["dropbox_key"], conf["dropbox_secret"])
-	print "[INFO] Authorize this application: {}".format(flow.start())
-	authCode = raw_input("Enter auth code here: ").strip()
+# check if we want to use weibo to send images
+if conf["use_weibo"]:
+	callback_url = 'https://api.weibo.com/oauth2/default.html'
 
-	# finish the authorization and grab the Dropbox client
-	(accessToken, userID) = flow.finish(authCode)
-	client = DropboxClient(accessToken)
-	print "[SUCCESS] dropbox account linked"
+    access_token, expires_in = get_access_token(app_key, app_secret, callback_url)
+    access_token = 'xxxxx'
+    expires_in = 'xxxxx'
+
+    client = APIClient(app_key=app_key, app_secret=app_secret, redirect_uri=callback_url)
+    client.set_access_token(access_token, expires_in)
+    print "[SUCCESS] weibo account linked"
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -117,7 +118,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			# high enough
 			if motionCounter >= conf["min_motion_frames"]:
 				# check to see if dropbox sohuld be used
-				if conf["use_dropbox"]:
+				if conf["use_weibo"]:
 					# write the image to temporary file
 					t = TempImage()
 					cv2.imwrite(t.path, frame)
@@ -125,8 +126,11 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 					# upload the image to Dropbox and cleanup the tempory image
 					print "[UPLOAD] {}".format(ts)
 					path = "{base_path}/{timestamp}.jpg".format(
-						base_path=conf["dropbox_base_path"], timestamp=ts)
-					client.put_file(path, open(t.path, "rb"))
+						base_path=conf["weibo_base_path"], timestamp=ts)
+					# client.put_file(path, open(t.path, "rb"))
+					f = open(path, 'rb')
+			        client.statuses.upload.post(status=u'object detected from raspberry pi', pic=f)
+			        f.close()
 					t.cleanup()
 
 				# update the last uploaded timestamp and reset the motion
